@@ -1,0 +1,16 @@
+[
+  {
+    "id": 0,
+    "date": "2026-05-01",
+    "category": "coffee",
+    "amount": 8500,
+    "memo": "coffee"
+  },
+  {
+    "id": 1,
+    "date": "2026-05-01",
+    "category": "coffee",
+    "amount": 8500,
+    "memo": "coffee"
+  }
+]
