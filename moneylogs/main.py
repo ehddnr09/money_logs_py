@@ -1,3 +1,4 @@
+# todo: oop 시작하기.
 import sys
 sys.path.append('/app/moneylogs')
 import argparse
