@@ -1,4 +1,5 @@
 import datetime
+import json
 amount_schema = {
   "type": "object",
   "properties": {
@@ -21,8 +22,18 @@ amount_schema = {
 
 class Transaction:
   def __init__(self, id: int = None, date: datetime = None, category: str = None, amount: int = None, memo: str = None):
-      self.id = id
-      self.date = date
-      self.category = category
-      self.amount = amount
-      self.memo = memo
+    self.id = id
+    self.date = date
+    self.category = category
+    self.amount = amount
+    self.memo = memo
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "date": self.date,
+      "category": self.category,
+      "amount": self.amount,
+      "memo": self.memo
+    }
+
