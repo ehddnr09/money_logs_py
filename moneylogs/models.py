@@ -1,13 +1,14 @@
+import datetime
 amount_schema = {
-    "type": "object",
-    "properties": {
-        "id": {"type": "integer"},
-        "date": {"type": "string"},
-        "category": {"type": "string", "enum": ["food", "coffee", "transport", "etc"]},
-        "amount":{"type": "integer"},
-        "memo": {"type": "string"}
-    },
-    "required": ["id", "date", "category", "amount", "memo"]
+  "type": "object",
+  "properties": {
+      "id": {"type": "integer"},
+      "date": {"type": "string"},
+      "category": {"type": "string", "enum": ["food", "coffee", "transport", "etc"]},
+      "amount": {"type": "integer"},
+      "memo": {"type": "string"}
+  },
+  "required": ["id", "date", "category", "amount", "memo"]
 }
 # class AmountModel:
 #     def __init__(self, id=None, date=None, category=None, amount=None, memo=None):
@@ -17,7 +18,11 @@ amount_schema = {
 #         self.amount = amount
 #         self.memo = memo
 
-    
 
-
-
+class Transaction:
+  def __init__(self, id: int = None, date: datetime = None, category: str = None, amount: int = None, memo: str = None):
+      self.id = id
+      self.date = date
+      self.category = category
+      self.amount = amount
+      self.memo = memo
