@@ -7,7 +7,6 @@ from models import amount_schema
 import csv
 
 
-# todo: class 사용하여 데이터 정형화
 file_path = "/app/data/transactions.json"
 export_file_path = "/app/data/transaction_export.csv"
 
