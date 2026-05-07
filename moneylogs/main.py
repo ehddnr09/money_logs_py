@@ -4,6 +4,8 @@ import argparse
 import storage
 import datetime
 import stats
+import models
+
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(dest="command", help="choose the command")
