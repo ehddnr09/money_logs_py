@@ -29,7 +29,8 @@ class CategoryValue(Enum):
   
 
 def type_check(data):
-    if data["id"] is not int:
+
+    if isinstance(data["id"], int) is False:
       commands.error()
 
     if os.path.isfile(file_path) is False and data["id"] is None:
@@ -38,13 +39,13 @@ def type_check(data):
     if data["date"] is None or commands.validate_date(date_text=data["date"]) is False:
       commands.error()
 
-    if isinstance(data["category"], str) or data["category"] is None:
+    if isinstance(data["category"], str) is False or data["category"] is None:
       commands.error()
 
-    if isinstance(data["amount"], int) or data["amount"] is None:
+    if isinstance(data["amount"], int) is False or data["amount"] is None:
       commands.error()
 
-    if isinstance(data["memo"], str) or data["memo"] is None:
+    if isinstance(data["memo"], str) is False or data["memo"] is None:
       commands.error()
 
     return data
@@ -72,7 +73,6 @@ class Transaction:
   
   @classmethod
   def from_dict(cls, data):
-
     type_check_data = type_check(data=data)
 
     return cls(

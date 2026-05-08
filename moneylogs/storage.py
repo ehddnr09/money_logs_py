@@ -5,10 +5,88 @@ from datetime import datetime
 from jsonschema import validate, exceptions
 from models import amount_schema
 import csv
+import models
 
 
 file_path = "/app/data/transactions.json"
 export_file_path = "/app/data/transaction_export.csv"
+
+class TransactionRepository:
+    
+
+    def __init__(self):
+        self.transaction = models.Transaction()
+
+    def load(self):
+      try:
+        with open(file_path, "r", encoding='utf-8') as f:
+          datas_list = json.load(f)
+        
+        dict_data_list= list(map(self.transaction.from_dict, datas_list))
+        
+        return dict_data_list
+      except ValueError:
+        commands.error()
+        with open(file_path, "w") as f:
+                f.write("[]")
+        return []
+
+    
+    def save(self, transactions: list[models.Transaction]):
+      try:
+        if os.path.isfile(file_path):
+          save_data_list = map(self.transaction.to_dict, transactions)
+          with open(file_path, "w") as f:
+              json.dump(save_data_list, f)
+          return print("save succeed.")
+        else:
+          json_data = json.dumps(transactions)
+          with open(file_path, "w") as f:
+                  f.write(json_data)
+        
+      except ValueError:
+        commands.error()
+    
+    def next_id(id: int):
+      return id + 1
+    
+    def add(self, transaction: models.Transaction):
+      # id = transaction.id
+      category = transaction.category
+      date = transaction.date
+      amount = transaction.amount
+      memo = transaction.memo
+      if category != "coffee" and category != "food" and category != "transport" and category != "etc":
+          return print("카테고리는 coffee or food or transport or etc 중에 골라주세요.")
+          
+      datas_list = []
+      
+      insert_data = models.Transaction(
+          date=date,
+          category=category,
+          amount=amount,
+          memo=memo
+      ).to_dict()
+
+
+      if os.path.isfile(file_path):
+        datas_list = self.load()
+      else:
+        insert_data =[{'id': 0, **insert_data}]
+        return self.save(transactions=insert_data)
+      
+      if len(datas_list) > 0:
+          data_id = self.next_id(id=datas_list[len(datas_list)-1])
+
+          transactions = [*datas_list,{
+              "id": data_id,
+              **insert_data
+          }]
+          save_transactions(transactions=transactions)
+      else:
+          transactions =[{'id': 0, **insert_data}]
+          save_transactions(transactions=transactions)
+
 
 def check_data(data):
     try:

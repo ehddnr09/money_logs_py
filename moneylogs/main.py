@@ -38,6 +38,7 @@ if args.command == "add":
     category = args.category
     amount = args.amount
     memo = args.memo
+    storage.TransactionRepository().load()
     storage.add_transaction(date, category, amount, memo)
 
 elif args.command == "list":
