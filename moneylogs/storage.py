@@ -38,7 +38,7 @@ class TransactionRepository:
           save_data_list = map(self.transaction.to_dict, transactions)
           with open(file_path, "w") as f:
               json.dump(save_data_list, f)
-          return print("save succeed.")
+          return True
         else:
           json_data = json.dumps(transactions)
           with open(file_path, "w") as f:
@@ -50,23 +50,25 @@ class TransactionRepository:
     def next_id(id: int):
       return id + 1
     
-    def add(self, transaction: models.Transaction):
+    def add(self, transaction):
       # id = transaction.id
-      category = transaction.category
-      date = transaction.date
-      amount = transaction.amount
-      memo = transaction.memo
+      category = transaction["category"]
+      date = transaction["date"]
+      amount = transaction["amount"]
+      memo = transaction["memo"]
       if category != "coffee" and category != "food" and category != "transport" and category != "etc":
           return print("카테고리는 coffee or food or transport or etc 중에 골라주세요.")
           
       datas_list = []
-      
-      insert_data = models.Transaction(
+
+      insert_data_model = models.Transaction(
           date=date,
           category=category,
           amount=amount,
           memo=memo
-      ).to_dict()
+      )
+      
+      insert_data = insert_data_model.to_dict()
 
 
       if os.path.isfile(file_path):
@@ -82,10 +84,38 @@ class TransactionRepository:
               "id": data_id,
               **insert_data
           }]
-          save_transactions(transactions=transactions)
+          self.save(transactions=transactions)
+
+          return True
       else:
           transactions =[{'id': 0, **insert_data}]
-          save_transactions(transactions=transactions)
+          self.save(transactions=transactions)
+
+          return True
+    def delete(self, id: int):
+        if id == 0 or id:
+        
+          if os.path.isfile(file_path) is False:
+              return print("데이터가 없습니다. 먼저 데이터를 추가해주세요.")
+          datas_list= self.load()
+
+          transactions = []
+          
+          
+          for item in datas_list:
+              if item['id'] != id:
+                  transactions = [*transactions, item]
+                  
+          
+          if len(transactions) == len(datas_list):
+              return print("해당 아이디가 없습니다. 다시 확인 후 입력해주세요.")
+
+          delete_status = self.save(transactions=transactions)
+
+          return delete_status
+
+        else:
+            print("id가 없습니다. id를 입력해주세요.")
 
 
 def check_data(data):
